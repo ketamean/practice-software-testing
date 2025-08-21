@@ -1,0 +1,214 @@
+{
+	"info": {
+		"_postman_id": "c94ab34d-59a8-4453-8ea8-7d6f213d60fc",
+		"name": "Brand",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "41355527"
+	},
+	"item": [
+		{
+			"name": "login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (data.require_auth) {",
+							"    const status = 200",
+							"    const responseJson = pm.response.json()",
+							"    pm.collectionVariables.set('ACCESS_TOKEN', responseJson.access_token)",
+							"    pm.test(`Status code is ${status}`, function () {",
+							"        pm.response.to.have.status(status);",
+							"    });",
+							"} else {",
+							"    const status = 401",
+							"    pm.test(`Status code is ${status}`, function () {",
+							"        pm.response.to.have.status(status);",
+							"    });",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"if (data.require_auth) {",
+							"    pm.collectionVariables.set('EMAIL', data.auth_email)",
+							"    pm.collectionVariables.set('PASSWORD', data.auth_password)",
+							"} else {",
+							"    pm.collectionVariables.set('EMAIL', '')",
+							"    pm.collectionVariables.set('PASSWORD', '')",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "{{EMAIL}}",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "{{PASSWORD}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/users/login",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"users",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create a new brand",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(`Status code is ${data.expected_status_code}`, function () {",
+							"    pm.response.to.have.status(data.expected_status_code);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.collectionVariables.set(\"NAME\", data.post_name);",
+							"pm.collectionVariables.set(\"SLUG\", data.post_slug);",
+							"pm.collectionVariables.set(\"DESCRIPTION\", data.post_description);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{ACCESS_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "{{NAME}}",
+							"type": "text"
+						},
+						{
+							"key": "slug",
+							"value": "{{SLUG}}",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "{{DESCRIPTION}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/brands",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"brands"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{ACCESS_TOKEN}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "NAME",
+			"value": ""
+		},
+		{
+			"key": "SLUG",
+			"value": ""
+		},
+		{
+			"key": "DESCRIPTION",
+			"value": ""
+		},
+		{
+			"key": "ACCESS_TOKEN",
+			"value": ""
+		},
+		{
+			"key": "EMAIL",
+			"value": ""
+		},
+		{
+			"key": "PASSWORD",
+			"value": ""
+		}
+	]
+}

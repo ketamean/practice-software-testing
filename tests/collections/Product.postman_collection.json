@@ -1,0 +1,377 @@
+{
+	"info": {
+		"_postman_id": "5d17b63a-425b-4995-8bf7-e9deb85a3ab2",
+		"name": "Product",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "41355527"
+	},
+	"item": [
+		{
+			"name": "login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"if (data.require_auth) {",
+							"    const status = 200",
+							"    const responseJson = pm.response.json()",
+							"    pm.collectionVariables.set('ACCESS_TOKEN', responseJson.access_token)",
+							"    pm.test(`Status code is ${status}`, function () {",
+							"        pm.response.to.have.status(status);",
+							"    });",
+							"} else {",
+							"    const status = 401",
+							"    pm.test(`Status code is ${status}`, function () {",
+							"        pm.response.to.have.status(status);",
+							"    });",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"if (data.require_auth) {",
+							"    pm.collectionVariables.set('EMAIL', data.auth_email)",
+							"    pm.collectionVariables.set('PASSWORD', data.auth_password)",
+							"} else {",
+							"    pm.collectionVariables.set('EMAIL', '')",
+							"    pm.collectionVariables.set('PASSWORD', '')",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "email",
+							"value": "{{EMAIL}}",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "{{PASSWORD}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/users/login",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"users",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get all products",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"if (data.request_type === 'GET') {",
+							"    pm.collectionVariables.set(\"GET_BY_BRAND\", data.get_by_brand);",
+							"    pm.collectionVariables.set(\"GET_BY_CATEGORY\", data.get_by_category);",
+							"    pm.collectionVariables.set(\"GET_IS_RENTAL\", data.get_is_rental);",
+							"    pm.collectionVariables.set(\"GET_BETWEEN\", data.get_between);",
+							"    pm.collectionVariables.set(\"GET_SORT\", data.get_sort);",
+							"} else {",
+							"    pm.collectionVariables.set(\"GET_BY_BRAND\", '');",
+							"    pm.collectionVariables.set(\"GET_BY_CATEGORY\", '');",
+							"    pm.collectionVariables.set(\"GET_IS_RENTAL\", '');",
+							"    pm.collectionVariables.set(\"GET_BETWEEN\", '');",
+							"    pm.collectionVariables.set(\"GET_SORT\", '');",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let expected_status;",
+							"if (data.request_type === 'GET') {",
+							"    expected_status = data.expected_status_code",
+							"} else {",
+							"    expected_status = 200",
+							"}",
+							"",
+							"pm.test(`Status code is ${expected_status}`, function () {",
+							"    pm.response.to.have.status(expected_status);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/products?by_brand={{GET_BY_BRAND}}&by_category={{GET_BY_CATEGORY}}&is_rental={{GET_IS_RENTAL}}&between={{GET_BETWEEN}}&sort={{GET_SORT}}",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"products"
+					],
+					"query": [
+						{
+							"key": "by_brand",
+							"value": "{{GET_BY_BRAND}}"
+						},
+						{
+							"key": "by_category",
+							"value": "{{GET_BY_CATEGORY}}"
+						},
+						{
+							"key": "is_rental",
+							"value": "{{GET_IS_RENTAL}}"
+						},
+						{
+							"key": "between",
+							"value": "{{GET_BETWEEN}}"
+						},
+						{
+							"key": "sort",
+							"value": "{{GET_SORT}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create a new product",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"if (data.request_type === 'POST') {",
+							"    pm.collectionVariables.set(\"POST_NAME\", data.post_name)",
+							"    pm.collectionVariables.set(\"POST_DESCRIPTION\", data.post_description)",
+							"    pm.collectionVariables.set(\"POST_PRICE\", data.post_price)",
+							"    pm.collectionVariables.set(\"POST_CATEGORY_ID\", data.post_category_id)",
+							"    pm.collectionVariables.set(\"POST_BRAND_ID\", data.post_brand_id)",
+							"    pm.collectionVariables.set(\"POST_PRODUCT_IMAGE_ID\", data.post_product_image_id)",
+							"    pm.collectionVariables.set(\"POST_IS_LOCATION_OFFER\", data.post_is_location_offer)",
+							"    pm.collectionVariables.set(\"POST_IS_RENTAL\", data.post_is_rental)",
+							"} else {",
+							"    pm.collectionVariables.set(\"POST_NAME\", '')",
+							"    pm.collectionVariables.set(\"POST_DESCRIPTION\", '')",
+							"    pm.collectionVariables.set(\"POST_PRICE\", '')",
+							"    pm.collectionVariables.set(\"POST_CATEGORY_ID\", '')",
+							"    pm.collectionVariables.set(\"POST_BRAND_ID\", '')",
+							"    pm.collectionVariables.set(\"POST_PRODUCT_IMAGE_ID\", '')",
+							"    pm.collectionVariables.set(\"POST_IS_LOCATION_OFFER\", '')",
+							"    pm.collectionVariables.set(\"POST_IS_RENTAL\", '')",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let expected_status;",
+							"if (data.request_type === 'POST') {",
+							"    expected_status = data.expected_status_code",
+							"} else {",
+							"    expected_status = 422",
+							"}",
+							"",
+							"pm.test(`Status code is ${expected_status}`, function () {",
+							"    pm.response.to.have.status(expected_status);",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{ACCESS_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "name",
+							"value": "{{POST_NAME}}",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "{{POST_DESCRIPTION}}",
+							"type": "text"
+						},
+						{
+							"key": "price",
+							"value": "{{POST_PRICE}}",
+							"type": "text"
+						},
+						{
+							"key": "category_id",
+							"value": "{{POST_CATEGORY_ID}}",
+							"type": "text"
+						},
+						{
+							"key": "brand_id",
+							"value": "{{POST_BRAND_ID}}",
+							"type": "text"
+						},
+						{
+							"key": "product_image_id",
+							"value": "{{POST_PRODUCT_IMAGE_ID}}",
+							"type": "text"
+						},
+						{
+							"key": "is_location_offer",
+							"value": "{{POST_IS_LOCATION_OFFER}}",
+							"type": "text"
+						},
+						{
+							"key": "is_rental",
+							"value": "{{POST_IS_RENTAL}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/products",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"products"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "POST_NAME",
+			"value": ""
+		},
+		{
+			"key": "POST_DESCRIPTION",
+			"value": ""
+		},
+		{
+			"key": "POST_PRICE",
+			"value": ""
+		},
+		{
+			"key": "POST_CATEGORY_ID",
+			"value": ""
+		},
+		{
+			"key": "POST_BRAND_ID",
+			"value": ""
+		},
+		{
+			"key": "POST_PRODUCT_IMAGE_ID",
+			"value": ""
+		},
+		{
+			"key": "POST_IS_LOCATION_OFFER",
+			"value": ""
+		},
+		{
+			"key": "POST_IS_RENTAL",
+			"value": ""
+		},
+		{
+			"key": "GET_BY_BRAND",
+			"value": ""
+		},
+		{
+			"key": "GET_IS_RENTAL",
+			"value": ""
+		},
+		{
+			"key": "GET_BY_CATEGORY",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "GET_BETWEEN",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "GET_SORT",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "EMAIL",
+			"value": ""
+		},
+		{
+			"key": "PASSWORD",
+			"value": ""
+		},
+		{
+			"key": "ACCESS_TOKEN",
+			"value": ""
+		}
+	]
+}

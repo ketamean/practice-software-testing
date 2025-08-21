@@ -1,0 +1,34 @@
+id,name,require_auth,auth_email,auth_password,post_name,post_slug,post_description,expected_status_code
+1,Create a brand without authentication,,,,Unauth request,unauth-request,,403
+2,Create a brand with only required fields,true,customer@practicesoftwaretesting.com,welcome01,Awesome Brand,awesome-brand,,201
+3,Create a brand with all fields (required and optional),true,admin@practicesoftwaretesting.com,welcome01,Super Tools,super-tools,The best tools on the market.,201
+4,name with minimum length (3 characters),true,admin@practicesoftwaretesting.com,welcome01,Bos,bos,,201
+5,name with maximum length (50 characters),true,admin@practicesoftwaretesting.com,welcome01,The-Most-Incredibly-Super-Duper-Long-Brand-Name,long-brand-name,,201
+6,slug with minimum length (3 characters),true,admin@practicesoftwaretesting.com,welcome01,DeWalt,dwt,,201
+7,slug with maximum length (50 characters),true,admin@practicesoftwaretesting.com,welcome01,Another Long Name,another-incredibly-super-duper-long-brand-slug,,201
+8,slug containing numbers,true,admin@practicesoftwaretesting.com,welcome01,Brand 123,brand-123,,201
+9,description with maximum length (255 characters),true,admin@practicesoftwaretesting.com,welcome01,Makita,makita-tools,This is a very long description that is exactly 255 characters to test the absolute maximum limit of the description field. This ensures the system can handle full-length text without any errors or truncation issues before processing the final request for creation.,201
+10,Missing required name field,true,admin@practicesoftwaretesting.com,welcome01,,missing-name,,422
+11,Missing required slug field,true,admin@practicesoftwaretesting.com,welcome01,Missing Slug,,,422
+12,Both required fields are missing,true,admin@practicesoftwaretesting.com,welcome01,,,,422
+13,name field is null,true,admin@practicesoftwaretesting.com,welcome01,,null-name,,422
+14,slug field is null,true,admin@practicesoftwaretesting.com,welcome01,Null Slug,,,422
+15,name field is an empty string,true,admin@practicesoftwaretesting.com,welcome01,,empty-name,,422
+16,slug field is an empty string,true,admin@practicesoftwaretesting.com,welcome01,Empty Slug,,,422
+17,name with length less than minimum (2 characters),true,admin@practicesoftwaretesting.com,welcome01,Mi,mi,,422
+18,name with length greater than maximum (51 characters),true,admin@practicesoftwaretesting.com,welcome01,This-is-a-brand-name-that-is-definitely-too-long,too-long-name,,422
+19,slug with length less than minimum (2 characters),true,admin@practicesoftwaretesting.com,welcome01,Milwaukee,mw,,422
+20,slug with length greater than maximum (51 characters),true,admin@practicesoftwaretesting.com,welcome01,Another Too Long Name,this-is-a-brand-slug-that-is-definitely-too-long,,422
+21,description with length greater than maximum (256 characters),true,admin@practicesoftwaretesting.com,welcome01,Ryobi,ryobi-tools,This is a very long description that is exactly 256 characters to test just over the absolute maximum limit of the description field. This ensures the system can gracefully reject oversized input without any errors or truncation issues before processing it.,422
+22,slug contains uppercase letters,true,admin@practicesoftwaretesting.com,welcome01,Invalid Slug,Invalid-Slug,,422
+23,slug contains special characters,true,admin@practicesoftwaretesting.com,welcome01,Special Slug,special_slug!,,422
+24,slug contains spaces,true,admin@practicesoftwaretesting.com,welcome01,Spaced Slug,spaced slug,,422
+25,Attempt to create a brand with a duplicate slug,true,admin@practicesoftwaretesting.com,welcome01,Awesome Brand,awesome-brand,,422
+26,name with incorrect data type (number),true,admin@practicesoftwaretesting.com,welcome01,12345,number-name,,422
+27,slug with incorrect data type (number),true,admin@practicesoftwaretesting.com,welcome01,Number Slug,12345,,422
+28,name with incorrect data type (boolean),true,admin@practicesoftwaretesting.com,welcome01,TRUE,boolean-name,,422
+29,description with incorrect data type (number),true,admin@practicesoftwaretesting.com,welcome01,Test Brand,test-brand-desc,98765,422
+30,Malformed JSON in request body,true,admin@practicesoftwaretesting.com,welcome01,Malformed,malformed-json,,400
+31,Empty request body,true,admin@practicesoftwaretesting.com,welcome01,,,,400
+32,Unexpected field in the request body,true,admin@practicesoftwaretesting.com,welcome01,Extra Field,extra-field,,201
+33,Request body is an array of multiple brands,true,admin@practicesoftwaretesting.com,welcome01,Awesome Brand,awesome-brand-1,,422
