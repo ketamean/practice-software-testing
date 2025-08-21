@@ -42,7 +42,7 @@ jobs:
         run: npm install -g newman
       
       - name: Run Postman Collection Product with Newman
-        run: newman run ./tests/collections/Product.postman_collection.json --env-var "BASE_URL=${{ secrets.BASE_URL }}" --iteration-data ./tests/data/data_product.csv
+        run: newman run ./tests/collections/Product.postman_collection.json --env-var "BASE_URL=${{ secrets.BASE_URL }}" --iteration-data ./tests/data/data_product.csv -x --reporters cli,json --reporter-json-export ./tests/report-product.json
 
       - name: Run Postman Collection Brand with Newman
-        run: newman run ./tests/collections/Brand.postman_collection.json --env-var "BASE_URL=${{ secrets.BASE_URL }}" --iteration-data ./tests/data/data_brand.csv
+        run: newman run ./tests/collections/Brand.postman_collection.json --env-var "BASE_URL=${{ secrets.BASE_URL }}" --iteration-data ./tests/data/data_brand.csv -x --reporters cli,json --reporter-json-export ./tests/report-brand.json
