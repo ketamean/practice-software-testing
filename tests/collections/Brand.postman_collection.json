@@ -188,15 +188,27 @@
 	"variable": [
 		{
 			"key": "NAME",
-			"value": ""
+			"value": "",
+			"description": {
+				"content": "",
+				"type": "text/plain"
+			}
 		},
 		{
 			"key": "SLUG",
-			"value": ""
+			"value": "",
+			"description": {
+				"content": "",
+				"type": "text/plain"
+			}
 		},
 		{
 			"key": "DESCRIPTION",
-			"value": ""
+			"value": "",
+			"description": {
+				"content": "",
+				"type": "text/plain"
+			}
 		},
 		{
 			"key": "ACCESS_TOKEN",
